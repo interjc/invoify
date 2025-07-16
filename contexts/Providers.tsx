@@ -3,7 +3,7 @@
 import React from "react";
 
 // RHF
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, Resolver, useForm } from "react-hook-form";
 
 // Zod
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,33 +24,31 @@ import { InvoiceType } from "@/types";
 import { FORM_DEFAULT_VALUES } from "@/lib/variables";
 
 type ProvidersProps = {
-    children: React.ReactNode;
+  children: React.ReactNode;
 };
 
 const Providers = ({ children }: ProvidersProps) => {
-    const form = useForm<InvoiceType>({
-        resolver: zodResolver(InvoiceSchema),
-        defaultValues: FORM_DEFAULT_VALUES,
-    });
+  const form = useForm<InvoiceType>({
+    resolver: zodResolver(InvoiceSchema) as unknown as Resolver<InvoiceType>,
+    defaultValues: FORM_DEFAULT_VALUES as unknown as InvoiceType,
+  });
 
-    return (
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-        >
-            <TranslationProvider>
-                <FormProvider {...form}>
-                    <InvoiceContextProvider>
-                        <ChargesContextProvider>
-                            {children}
-                        </ChargesContextProvider>
-                    </InvoiceContextProvider>
-                </FormProvider>
-            </TranslationProvider>
-        </ThemeProvider>
-    );
+  return (
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <TranslationProvider>
+        <FormProvider {...form}>
+          <InvoiceContextProvider>
+            <ChargesContextProvider>{children}</ChargesContextProvider>
+          </InvoiceContextProvider>
+        </FormProvider>
+      </TranslationProvider>
+    </ThemeProvider>
+  );
 };
 
 export default Providers;
