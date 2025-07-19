@@ -17,6 +17,7 @@ Invoify is a web-based invoice generator application built with Next.js 13, Type
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
   - [License](#license)
+  - [Discord](#discord)
 
 
 ## Technologies
@@ -52,9 +53,6 @@ Invoify is a web-based invoice generator application built with Next.js 13, Type
 
 ## Demo
 
-> [!NOTE]
-> Please be advised that there are currently issues when using this application in the Mozilla Firefox browser. For more information, refer to [Issue #11](https://github.com/aliabb01/invoify/issues/11).
-
 Visit the [live demo](https://invoice.vibany.com/) to see Invoify in action.
 
 ## Getting Started
@@ -74,7 +72,7 @@ Follow these instructions to get Invoify up and running on your local machine.
    cd invoify
    ```
 2. Install dependencies
-   
+
    ```bash
    npm install
    ```
