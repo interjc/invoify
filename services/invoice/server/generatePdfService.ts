@@ -41,10 +41,13 @@ export async function generatePdfService(req: NextRequest) {
 				ignoreHTTPSErrors: true,
 			});
 		} else {
-			const puppeteer = await import("puppeteer");
+			const puppeteer = await import("puppeteer-core");
 			browser = await puppeteer.launch({
-				args: ["--no-sandbox", "--disable-setuid-sandbox"],
-				headless: "new",
+				args: [...chromium.args, "--disable-dev-shm-usage", "--no-sandbox", "--disable-setuid-sandbox"],
+				defaultViewport: chromium.defaultViewport,
+				executablePath: await chromium.executablePath(),
+				headless: true,
+				ignoreHTTPSErrors: true,
 			});
 		}
 

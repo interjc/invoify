@@ -18,6 +18,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 // Next Intl
 import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from 'next-intl/server';
 
 // ShadCn
 import { Toaster } from "@/components/ui/toaster";
@@ -40,7 +41,6 @@ export const metadata: Metadata = {
         "Create invoices effortlessly with Invoify, the free invoice generator. Try it now!",
     icons: [{ rel: "icon", url: Favicon.src }],
     keywords: ROOTKEYWORDS,
-    viewport: "width=device-width, initial-scale=1",
     robots: {
         index: true,
         follow: true,
@@ -57,24 +57,30 @@ export const metadata: Metadata = {
     },
 };
 
+export const viewport = {
+    width: "device-width",
+    initialScale: 1,
+};
+
 export function generateStaticParams() {
-    const locales = LOCALES.map((locale) => locale.code);
-    return locales;
+    return LOCALES.map((locale) => ({ locale: locale.code }));
 }
 
 export default async function LocaleLayout({
     children,
-    params: { locale },
+    params,
 }: {
     children: React.ReactNode;
     params: { locale: string };
 }) {
-    let messages;
-    try {
-        messages = (await import(`@/i18n/locales/${locale}.json`)).default;
-    } catch (error) {
-        notFound();
-    }
+    const { locale } = await params;
+    
+    // Validate that the incoming `locale` parameter is valid
+    if (!LOCALES.some((l) => l.code === locale)) notFound();
+
+    // Providing all messages to the client
+    // side is the easiest way to get started
+    const messages = await getMessages();
 
     return (
         <html lang={locale}>
@@ -88,7 +94,7 @@ export default async function LocaleLayout({
             <body
                 className={`${outfit.className} ${dancingScript.variable} ${parisienne.variable} ${greatVibes.variable} ${alexBrush.variable} antialiased bg-slate-100 dark:bg-slate-800`}
             >
-                <NextIntlClientProvider locale={locale} messages={messages}>
+                <NextIntlClientProvider messages={messages}>
                     <Providers>
                         <BaseNavbar />
 

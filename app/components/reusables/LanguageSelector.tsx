@@ -1,9 +1,7 @@
 "use client";
 
-import { useParams } from "next/navigation";
-
-// Next Intl
-import { useRouter } from "next-intl/client"; // This useRouter is wrapped with next/navigation useRouter
+import { useLocale } from 'next-intl';
+import { useRouter, usePathname } from '@/i18n/navigation';
 
 // ShadCn
 import {
@@ -22,16 +20,18 @@ import { LOCALES } from "@/lib/variables";
 
 const LanguageSelector = () => {
     const router = useRouter();
-    const params = useParams();
+    const pathname = usePathname();
+    const locale = useLocale();
 
     const handleLanguageChange = (lang: string) => {
         console.log(lang);
-
-        router.push("/", { locale: lang });
+        // Use the i18n-aware router to switch locale
+        router.replace(pathname, { locale: lang });
     };
+    
     return (
         <Select
-            value={params.locale.toLocaleString()}
+            value={locale}
             onValueChange={(lang) => handleLanguageChange(lang)}
         >
             <SelectTrigger

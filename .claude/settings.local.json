@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Bash(npm view:*)",
+      "Bash(grep:*)",
+      "Bash(rm:*)",
+      "Bash(mv:*)",
+      "Bash(pnpm add:*)",
+      "WebFetch(domain:next-intl.dev)"
+    ],
+    "deny": []
+  }
+}
