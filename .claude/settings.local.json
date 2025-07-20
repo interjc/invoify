@@ -7,7 +7,14 @@
       "Bash(rm:*)",
       "Bash(mv:*)",
       "Bash(pnpm add:*)",
-      "WebFetch(domain:next-intl.dev)"
+      "WebFetch(domain:next-intl.dev)",
+      "WebFetch(domain:developer.chrome.com)",
+      "WebFetch(domain:pptr.dev)",
+      "WebFetch(domain:github.com)",
+      "Bash(npx puppeteer browsers:*)",
+      "WebFetch(domain:dev.to)",
+      "WebFetch(domain:03balogun.medium.com)",
+      "Bash(npm install:*)"
     ],
     "deny": []
   }
