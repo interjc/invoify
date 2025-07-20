@@ -1,16 +1,16 @@
 "use client";
 
-import { useTranslationContext } from "@/contexts/TranslationContext";
+// import { useTranslationContext } from "@/contexts/TranslationContext";
 
 // Variables
-import { AUTHOR_GITHUB } from "@/lib/variables";
+// import { AUTHOR_GITHUB } from "@/lib/variables";
 
 const BaseFooter = () => {
-    const { _t } = useTranslationContext();
+    // const { _t } = useTranslationContext();
 
     return (
         <footer className="container py-10">
-            <p>
+            {/* <p>
                 {_t("footer.developedBy")}{" "}
                 <a
                     href={AUTHOR_GITHUB}
@@ -19,7 +19,7 @@ const BaseFooter = () => {
                 >
                     Ali Abbasov
                 </a>
-            </p>
+            </p> */}
         </footer>
     );
 };

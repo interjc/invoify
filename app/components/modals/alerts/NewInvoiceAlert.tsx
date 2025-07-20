@@ -73,7 +73,7 @@ const NewInvoiceAlert = ({ children }: NewInvoiceAlertProps) => {
             </AlertDialog>
 
             {/* Not for showing div and instead showing the whole button */}
-            {React.cloneElement(children as React.ReactElement, {
+            {React.cloneElement(children as React.ReactElement<any>, {
                 onClick: handleNewInvoice,
             })}
         </>
