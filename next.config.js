@@ -19,3 +19,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 
 module.exports = withNextIntl(withBundleAnalyzer(nextConfig));
+
+// Initialize OpenNext Cloudflare for development
+const { initOpenNextCloudflareForDev } = require("@opennextjs/cloudflare");
+initOpenNextCloudflareForDev();
