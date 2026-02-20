@@ -42,16 +42,16 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.279.0",
-    "next": "15.4.10",
+    "next": "16.1.6",
     "next-intl": "^4.8.3",
     "next-themes": "^0.2.1",
     "nodemailer": "^6.10.1",
     "number-to-words": "^1.2.4",
     "postcss": "8.4.31",
     "puppeteer-core": "22.5.0",
-    "react": "19.1.0",
+    "react": "19.2.4",
     "react-day-picker": "^8.10.1",
-    "react-dom": "19.1.0",
+    "react-dom": "19.2.4",
     "react-email": "^1.10.1",
     "react-hook-form": "^7.71.1",
     "react-signature-canvas": "^1.0.7",
@@ -67,17 +67,31 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^14.2.35",
+    "@next/bundle-analyzer": "16.1.6",
     "@sparticuz/chromium": "122.0.0",
     "@types/nodemailer": "^6.4.22",
     "@types/number-to-words": "^1.2.3",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
     "@types/react-signature-canvas": "^1.0.7",
     "@types/xml2js": "^0.4.14",
     "cross-env": "^7.0.3",
     "ignore-loader": "^0.1.2",
     "puppeteer": "^21.11.0",
     "wrangler": "^4.67.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.2.14",
+      "@types/react-dom": "19.2.3"
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@swc/core",
+      "esbuild",
+      "puppeteer",
+      "sharp",
+      "workerd"
+    ]
   }
 }
