@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "ship-vibany",
+  "name": "invoify",
   "compatibility_date": "2025-02-20",
   "compatibility_flags": [
     "nodejs_compat",
@@ -14,7 +14,7 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "ship-vibany"
+      "service": "invoify"
     }
   ],
   "r2_buckets": [
