@@ -13,7 +13,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 
 // Variables
 import { LOCALES } from "@/lib/variables";
@@ -24,10 +23,11 @@ const LanguageSelector = () => {
     const locale = useLocale();
 
     const handleLanguageChange = (lang: string) => {
-        console.log(lang);
         // Use the i18n-aware router to switch locale
         router.replace(pathname, { locale: lang });
     };
+
+    const currentLocale = LOCALES.find((l) => l.code === locale);
     
     return (
         <Select
@@ -35,25 +35,16 @@ const LanguageSelector = () => {
             onValueChange={(lang) => handleLanguageChange(lang)}
         >
             <SelectTrigger
-                className="w-[10rem] relative"
-                aria-label="Languages"
+                className="h-8 w-[8rem] border-0 bg-transparent text-sm hover:bg-accent"
+                aria-label="Select language"
             >
-                <Badge className="position: absolute -top-4 -left-2 font-normal">
-                    BETA
-                </Badge>
-                <SelectValue placeholder="Select a language" />
+                <SelectValue placeholder={currentLocale?.name || "Language"} />
             </SelectTrigger>
-            <SelectContent
-                style={{
-                    overflowY: "hidden",
-                    height: "min-content",
-                }}
-            >
+            <SelectContent align="end">
                 <SelectGroup>
-                    <SelectLabel>Languages</SelectLabel>
-
+                    <SelectLabel className="text-xs">Languages</SelectLabel>
                     {LOCALES.map((locale) => (
-                        <SelectItem key={locale.code} value={locale.code}>
+                        <SelectItem key={locale.code} value={locale.code} className="text-sm">
                             {locale.name}
                         </SelectItem>
                     ))}

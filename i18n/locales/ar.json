@@ -83,9 +83,12 @@
     "loadInvoice": "تحميل الفاتورة",
     "exportInvoice": "تصدير الفاتورة",
     "newInvoice": "فاتورة جديدة",
-    "generatePdf": "إنشاء PDF",
-    "pdfView": "عرض PDF"
-  },
+        "generatePdf": "إنشاء PDF",
+        "pdfView": "عرض PDF",
+        "livePreview": "معاينة مباشرة",
+        "finalPdf": "PDF النهائي",
+        "backToLivePreview": "العودة إلى المعاينة المباشرة"
+    },
   "footer": {
     "developedBy": "تم تطويره بواسطة"
   }

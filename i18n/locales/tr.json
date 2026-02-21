@@ -83,9 +83,12 @@
     "loadInvoice": "Fatura Yükle",
     "exportInvoice": "Faturayı Dışa Aktar",
     "newInvoice": "Yeni Fatura",
-    "generatePdf": "PDF Oluştur",
-    "pdfView": "PDF Görünümü"
-  },
+        "generatePdf": "PDF Oluştur",
+        "pdfView": "PDF Görünümü",
+        "livePreview": "Canlı önizleme",
+        "finalPdf": "Son PDF",
+        "backToLivePreview": "Canlı önizlemeye dön"
+    },
   "footer": {
     "developedBy": "Oluşturan"
   }

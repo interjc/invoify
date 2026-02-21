@@ -6,13 +6,6 @@ import { useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 // ShadCn
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 // React Wizard
@@ -52,54 +45,49 @@ const InvoiceForm = () => {
     }, [invoiceNumber]);
 
     return (
-        <div className={`xl:w-[55%]`}>
-            <Card>
-                <CardHeader>
-                    <div className="flex gap-3">
-                        <CardTitle className="flex items-center gap-3">
-                            <span className="uppercase">
-                                {_t("form.title")}
-                            </span>
-                        </CardTitle>
-                        <Badge variant="secondary" className="w-fit">
-                            <p style={{ fontSize: "14px" }}>
-                                {invoiceNumberLabel}
-                            </p>
-                        </Badge>
-                    </div>
-                    <CardDescription>{_t("form.description")}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-8">
-                        <Wizard>
-                            <WizardStep>
-                                <div className="flex gap-x-20 gap-y-10">
-                                    <BillFromSection />
+        <div className="flex h-full w-full flex-col border-r border-border/40 bg-card lg:w-[55%] xl:w-[50%]">
+            <div className="flex items-center justify-between border-b border-border/40 px-4 py-3">
+                <div className="flex items-center gap-2">
+                    <h2 className="text-sm font-semibold uppercase tracking-wide">
+                        {_t("form.title")}
+                    </h2>
+                    <Badge variant="secondary" className="text-xs">
+                        {invoiceNumberLabel}
+                    </Badge>
+                </div>
+                <p className="text-xs text-muted-foreground hidden sm:block">
+                    {_t("form.description")}
+                </p>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto">
+                <div className="p-4 lg:p-6">
+                    <Wizard>
+                        <WizardStep>
+                            <div className="grid gap-6 lg:grid-cols-2">
+                                <BillFromSection />
+                                <BillToSection />
+                            </div>
+                        </WizardStep>
+                        
+                        <WizardStep>
+                            <InvoiceDetails />
+                        </WizardStep>
 
-                                    <BillToSection />
-                                </div>
-                            </WizardStep>
-                            <WizardStep>
-                                <div className="flex flex-wrap gap-y-10">
-                                    <InvoiceDetails />
-                                </div>
-                            </WizardStep>
+                        <WizardStep>
+                            <Items />
+                        </WizardStep>
 
-                            <WizardStep>
-                                <Items />
-                            </WizardStep>
+                        <WizardStep>
+                            <PaymentInformation />
+                        </WizardStep>
 
-                            <WizardStep>
-                                <PaymentInformation />
-                            </WizardStep>
-
-                            <WizardStep>
-                                <InvoiceSummary />
-                            </WizardStep>
-                        </Wizard>
-                    </div>
-                </CardContent>
-            </Card>
+                        <WizardStep>
+                            <InvoiceSummary />
+                        </WizardStep>
+                    </Wizard>
+                </div>
+            </div>
         </div>
     );
 };

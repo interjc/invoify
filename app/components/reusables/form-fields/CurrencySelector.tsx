@@ -1,7 +1,12 @@
 "use client";
 
+import { useEffect } from "react";
+
 // RHF
 import { useFormContext } from "react-hook-form";
+
+// Next Intl
+import { useLocale } from "next-intl";
 
 // ShadCn
 import {
@@ -24,6 +29,9 @@ import {
 // Hooks
 import useCurrencies from "@/hooks/useCurrencies";
 
+// Variables
+import { LOCALE_CURRENCY_MAP, MAIN_CURRENCIES } from "@/lib/variables";
+
 // Types
 import { CurrencyType, NameType } from "@/types";
 
@@ -38,9 +46,33 @@ const CurrencySelector = ({
     label,
     placeholder,
 }: CurrencySelectorProps) => {
-    const { control } = useFormContext();
+    const { control, setValue, watch } = useFormContext();
+    const locale = useLocale();
 
     const { currencies, currenciesLoading } = useCurrencies();
+
+    // Set default currency based on locale
+    useEffect(() => {
+        const currentCurrency = watch(name);
+        // Only set default if currency is empty or USD (default)
+        if (!currentCurrency || currentCurrency === "USD") {
+            const defaultCurrency = LOCALE_CURRENCY_MAP[locale] || "USD";
+            setValue(name, defaultCurrency, { shouldValidate: false });
+        }
+    }, [locale, name, setValue, watch]);
+
+    // Filter currencies to show only main world currencies
+    const filteredCurrencies = currencies.filter((currency: CurrencyType) =>
+        MAIN_CURRENCIES.includes(currency.code)
+    );
+
+    // Sort: default currency for current locale first, then alphabetically
+    const sortedCurrencies = [...filteredCurrencies].sort((a: CurrencyType, b: CurrencyType) => {
+        const defaultCurrency = LOCALE_CURRENCY_MAP[locale] || "USD";
+        if (a.code === defaultCurrency) return -1;
+        if (b.code === defaultCurrency) return 1;
+        return a.code.localeCompare(b.code);
+    });
 
     return (
         <div>
@@ -67,17 +99,14 @@ const CurrencySelector = ({
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent
-                                        style={{
-                                            overflowY: "hidden",
-                                            height: "200px",
-                                        }}
+                                        className="max-h-[200px]"
                                     >
                                         <SelectGroup>
                                             <SelectLabel>
                                                 Currencies
                                             </SelectLabel>
                                             {!currenciesLoading &&
-                                                currencies.map(
+                                                sortedCurrencies.map(
                                                     (
                                                         currency: CurrencyType,
                                                         idx: number

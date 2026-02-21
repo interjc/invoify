@@ -6,17 +6,10 @@ import Image from "next/image";
 import { useFormContext } from "react-hook-form";
 
 // ShadCn
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 
 // Components
 import {
-    BaseButton,
     InvoiceTemplate1,
     InvoiceTemplate2,
 } from "@/app/components";
@@ -51,69 +44,50 @@ const TemplateSelector = () => {
         },
     ];
     return (
-        <>
-            <div>
-                <Label>Choose Invoice Template:</Label>
+        <div className="space-y-3">
+            <Label className="text-sm font-medium">Choose Invoice Template:</Label>
 
-                <div>
-                    <Card>
-                        <CardHeader>
-                            Templates
-                            <CardDescription>
-                                Select one of the predefined templates
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="">
-                            <div className="flex overflow-x-auto">
-                                {templates.map((template, idx) => (
-                                    <div
-                                        key={idx}
-                                        className="flex flex-col flex-shrink-0 mr-4 gap-y-3"
-                                    >
-                                        <p>{template.name}</p>
+            <div className="grid gap-3">
+                {templates.map((template) => (
+                    <button
+                        key={template.id}
+                        type="button"
+                        onClick={() => setValue("details.pdfTemplate", template.id)}
+                        className={`relative flex items-center gap-4 rounded-lg border p-3 text-left transition-all hover:border-primary/50 ${
+                            formValues.details.pdfTemplate === template.id
+                                ? "border-primary bg-primary/5"
+                                : "border-border bg-card"
+                        }`}
+                    >
+                        {/* Template Preview Image */}
+                        <div className="relative h-20 w-16 flex-shrink-0 overflow-hidden rounded-md">
+                            <Image
+                                src={template.img}
+                                alt={template.name}
+                                fill
+                                className="object-cover"
+                                sizes="64px"
+                            />
+                        </div>
 
-                                        <div className="relative">
-                                            {formValues.details.pdfTemplate ===
-                                                template.id && (
-                                                <div className="shadow-lg absolute right-2 top-2 rounded-full bg-blue-300 dark:bg-blue-600">
-                                                    <Check />
-                                                </div>
-                                            )}
-                                            <Image
-                                                src={template.img}
-                                                alt={template.name}
-                                                width={300}
-                                                height={700}
-                                                placeholder="blur"
-                                                className="cursor-pointer rounded-lg border-2 hover:border-blue-600"
-                                                onClick={() =>
-                                                    setValue(
-                                                        "details.pdfTemplate",
-                                                        template.id
-                                                    )
-                                                }
-                                            />
-                                            {/* {template.component} */}
-                                        </div>
-
-                                        <BaseButton
-                                            onClick={() =>
-                                                setValue(
-                                                    "details.pdfTemplate",
-                                                    template.id
-                                                )
-                                            }
-                                        >
-                                            Select
-                                        </BaseButton>
+                        {/* Template Info */}
+                        <div className="flex flex-1 flex-col gap-1">
+                            <div className="flex items-center gap-2">
+                                <span className="font-medium text-sm">{template.name}</span>
+                                {formValues.details.pdfTemplate === template.id && (
+                                    <div className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
+                                        <Check className="h-3 w-3" />
                                     </div>
-                                ))}
+                                )}
                             </div>
-                        </CardContent>
-                    </Card>
-                </div>
+                            <p className="text-xs text-muted-foreground line-clamp-2">
+                                {template.description}
+                            </p>
+                        </div>
+                    </button>
+                ))}
             </div>
-        </>
+        </div>
     );
 };
 

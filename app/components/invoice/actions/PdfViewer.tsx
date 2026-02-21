@@ -24,7 +24,7 @@ const PdfViewer = () => {
     const formValues = debouncedWatch();
 
     return (
-        <div className="my-3">
+        <div className="h-full">
             {invoicePdf.size == 0 ? (
                 <LivePreview data={formValues} />
             ) : (

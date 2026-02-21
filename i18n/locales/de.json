@@ -84,7 +84,10 @@
         "exportInvoice": "Rechnung exportieren",
         "newInvoice": "Neue Rechnung",
         "generatePdf": "PDF generieren",
-        "pdfView": "PDF-Ansicht"
+        "pdfView": "PDF-Ansicht",
+        "livePreview": "Live-Vorschau",
+        "finalPdf": "Endgültiges PDF",
+        "backToLivePreview": "Zurück zur Live-Vorschau"
     },
     "footer": {
         "developedBy": "Entwickelt von"
