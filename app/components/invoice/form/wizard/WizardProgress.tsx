@@ -6,8 +6,7 @@ import { useFormContext } from "react-hook-form";
 // React Wizard
 import { WizardValues } from "react-use-wizard";
 
-// Components
-import { BaseButton } from "@/app/components";
+
 
 // Contexts
 import { useTranslationContext } from "@/contexts/TranslationContext";
@@ -103,25 +102,26 @@ const WizardProgress = ({ wizard }: WizardProgressProps) => {
     ];
 
     return (
-        <div className="flex flex-wrap justify-around items-center gap-y-3">
-            {steps.map((step, idx) => (
-                <div key={step.id} className="flex items-center">
-                    <BaseButton
-                        variant={returnButtonVariant(step)}
-                        className="w-auto"
-                        onClick={() => {
-                            wizard.goToStep(step.id);
-                        }}
-                    >
-                        {step.id + 1}. {step.label}
-                    </BaseButton>
-
-                    {/* {step.id != stepCount - 1 && (
-                        <div>
-                            <Dot />
-                        </div>
-                    )} */}
-                </div>
+        <div className="flex items-center justify-center gap-1 border-b border-border/40 pb-4">
+            {steps.map((step) => (
+                <button
+                    key={step.id}
+                    onClick={() => wizard.goToStep(step.id)}
+                    className={`
+                        flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors
+                        ${step.id === activeStep
+                            ? "bg-primary text-primary-foreground"
+                            : step.isValid
+                                ? "text-muted-foreground hover:bg-accent hover:text-foreground"
+                                : "text-destructive hover:bg-destructive/10"
+                        }
+                    `}
+                >
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-background/20 text-[10px]">
+                        {step.id + 1}
+                    </span>
+                    <span className="hidden sm:inline">{step.label}</span>
+                </button>
             ))}
         </div>
     );

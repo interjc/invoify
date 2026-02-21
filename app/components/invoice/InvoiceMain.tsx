@@ -22,20 +22,19 @@ const InvoiceMain = () => {
     const { onFormSubmit } = useInvoiceContext();
 
     return (
-        <>
-            <Form {...useFormContext<InvoiceType>()}>
-                <form
-                    onSubmit={handleSubmit(onFormSubmit, (err) => {
-                        console.log(err);
-                    })}
-                >
-                    <div className="flex flex-wrap">
-                        <InvoiceForm />
-                        <InvoiceActions />
-                    </div>
-                </form>
-            </Form>
-        </>
+        <Form {...useFormContext<InvoiceType>()}>
+            <form
+                onSubmit={handleSubmit(onFormSubmit, (err) => {
+                    console.log(err);
+                })}
+                className="h-full"
+            >
+                <div className="flex h-[calc(100vh-3.5rem)] flex-col lg:flex-row">
+                    <InvoiceForm />
+                    <InvoiceActions />
+                </div>
+            </form>
+        </Form>
     );
 };
 

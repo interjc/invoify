@@ -92,7 +92,7 @@ export default async function LocaleLayout({
                 />
             </head>
             <body
-                className={`${outfit.className} ${dancingScript.variable} ${parisienne.variable} ${greatVibes.variable} ${alexBrush.variable} antialiased bg-slate-100 dark:bg-slate-800`}
+                className={`${outfit.className} ${dancingScript.variable} ${parisienne.variable} ${greatVibes.variable} ${alexBrush.variable} antialiased bg-background min-h-screen flex flex-col`}
             >
                 <NextIntlClientProvider messages={messages}>
                     <Providers>
