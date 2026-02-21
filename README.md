@@ -2,7 +2,7 @@
 
 Invoify is a web-based invoice generator application built with Next.js 16, TypeScript, React 19, and the Shadcn UI library. It provides an easy way to create and manage professional invoices with PDF generation, email support, and multi-language capabilities.
 
-![Invoify Website image](/public/assets/img/invoify-web-app.png)
+![Invoify Website image](https://invoice.vibany.com/assets/img/invoify-web-app.png)
 
 ## Table of Contents
 
