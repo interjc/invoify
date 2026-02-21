@@ -84,7 +84,10 @@
         "exportInvoice": "Eksporter faktura",
         "newInvoice": "Ny faktura",
         "generatePdf": "Generer PDF",
-        "pdfView": "PDF-vising"
+        "pdfView": "PDF-vising",
+        "livePreview": "Førehandsvising",
+        "finalPdf": "Endeleg PDF",
+        "backToLivePreview": "Tilbake til førehandsvising"
     },
     "footer": {
         "developedBy": "Utvikla av"

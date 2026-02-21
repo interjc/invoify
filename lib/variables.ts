@@ -70,6 +70,31 @@ export const LOCALES = [
 export const DEFAULT_LOCALE = LOCALES[0].code;
 
 /**
+ * Language to Currency mapping
+ * Maps locale codes to their default currencies
+ */
+export const LOCALE_CURRENCY_MAP: Record<string, string> = {
+    "en": "USD",      // English -> US Dollar
+    "de": "EUR",      // German -> Euro
+    "it": "EUR",      // Italian -> Euro
+    "es": "EUR",      // Spanish -> Euro
+    "ca": "EUR",      // Catalan -> Euro
+    "fr": "EUR",      // French -> Euro
+    "ar": "USD",      // Arabic -> US Dollar (commonly used in Arab regions)
+    "pl": "EUR",      // Polish -> Euro
+    "pt-BR": "BRL",   // Portuguese (Brazil) -> Brazilian Real
+    "tr": "USD",      // Turkish -> US Dollar
+    "ja": "JPY",      // Japanese -> Japanese Yen
+    "nb-NO": "EUR",   // Norwegian -> Euro (or NOK)
+    "nn-NO": "EUR",   // Norwegian -> Euro (or NOK)
+};
+
+/**
+ * Main world currencies to display
+ */
+export const MAIN_CURRENCIES = ["USD", "EUR", "GBP", "CNY", "JPY", "KRW", "BRL", "AUD", "CAD", "CHF"];
+
+/**
  * Signature variables
  */
 export const SIGNATURE_COLORS: SignatureColor[] = [

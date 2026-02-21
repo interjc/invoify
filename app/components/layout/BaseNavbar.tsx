@@ -2,10 +2,6 @@ import { useMemo } from "react";
 
 // Next
 import Link from "next/link";
-import Image from "next/image";
-
-// Assets
-import Logo from "@/public/assets/img/invoify-logo.svg";
 
 // Components
 import { DevDebug, LanguageSelector, ThemeSwitcher } from "@/app/components";
@@ -20,14 +16,7 @@ const BaseNavbar = () => {
             <nav className="flex h-14 items-center px-4 lg:px-6">
                 <div className="flex flex-1 items-center justify-between">
                     <Link href={"/"} className="flex items-center">
-                        <Image
-                            src={Logo}
-                            alt="Invoify Logo"
-                            width={120}
-                            height={40}
-                            loading="eager"
-                            className="h-8 w-auto"
-                        />
+                        <span className="text-xl font-bold tracking-tight">Invoice</span>
                     </Link>
                     
                     <div className="flex items-center gap-2">

@@ -83,9 +83,12 @@
 		"loadInvoice": "Carregar Factura",
 		"exportInvoice": "Exportar Factura",
 		"newInvoice": "Nova Factura",
-		"generatePdf": "Generar PDF",
-		"pdfView": "Veure PDF"
-	},
+        "generatePdf": "Generar PDF",
+        "pdfView": "Veure PDF",
+        "livePreview": "Vista prèvia en viu",
+        "finalPdf": "PDF final",
+        "backToLivePreview": "Tornar a la vista prèvia"
+    },
 	"footer": {
 		"developedBy": "Desenvolupat per"
 	}

@@ -25,10 +25,7 @@ const InvoiceActions = () => {
     return (
         <div className="flex h-full w-full flex-col bg-muted/30 lg:w-[45%] xl:w-[50%]">
             {/* Toolbar */}
-            <div className="flex items-center justify-between border-b border-border/40 px-4 py-3">
-                <h2 className="text-sm font-semibold uppercase tracking-wide">
-                    {_t("actions.title")}
-                </h2>
+            <div className="flex items-center justify-end border-b border-border/40 px-4 py-3">
                 <div className="flex items-center gap-1">
                     {/* Load modal button */}
                     <InvoiceLoaderModal>

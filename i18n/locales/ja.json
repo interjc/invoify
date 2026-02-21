@@ -84,7 +84,10 @@
         "exportInvoice": "請求書をエクスポート",
         "newInvoice": "新しい請求書",
         "generatePdf": "PDFを生成",
-        "pdfView": "PDFビュー"
+        "pdfView": "PDFビュー",
+        "livePreview": "ライブプレビュー",
+        "finalPdf": "最終PDF",
+        "backToLivePreview": "ライブプレビューに戻る"
     },
     "footer": {
         "developedBy": "開発者"

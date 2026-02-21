@@ -91,7 +91,10 @@
         "exportInvoice": "Exportar Fatura",
         "newInvoice": "Nova Fatura",
         "generatePdf": "Gerar PDF",
-        "pdfView": "Visualização em PDF"
+        "pdfView": "Visualização em PDF",
+        "livePreview": "Pré-visualização ao vivo",
+        "finalPdf": "PDF final",
+        "backToLivePreview": "Voltar para pré-visualização"
     },
     "footer": {
         "developedBy": "Desenvolvido por"

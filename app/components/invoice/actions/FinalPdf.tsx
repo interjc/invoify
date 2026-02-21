@@ -1,13 +1,11 @@
 "use client";
 
-// ShadCn
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-
 // Components
 import { BaseButton, SendPdfToEmailModal, Subheading } from "@/app/components";
 
 // Contexts
 import { useInvoiceContext } from "@/contexts/InvoiceContext";
+import { useTranslationContext } from "@/contexts/TranslationContext";
 
 // Icons
 import {
@@ -30,38 +28,40 @@ export default function FinalPdf() {
         sendPdfToMail,
     } = useInvoiceContext();
 
+    const { _t } = useTranslationContext();
+
     return (
-        <>
-            <Subheading>Final PDF:</Subheading>
-            <div className="flex items-center mb-3">
+        <div className="flex h-full flex-col">
+            <div className="flex items-center justify-between border-b border-border/40 pb-3">
+                <Subheading>{_t("actions.finalPdf")}</Subheading>
                 <BaseButton
-                    variant={"ghost"}
+                    variant="ghost"
                     size="sm"
                     onClick={removeFinalPdf}
                 >
-                    <MoveLeft className="w-5 h-5" />
-                    Back to Live Preview
+                    <MoveLeft className="h-4 w-4" />
+                    {_t("actions.backToLivePreview")}
                 </BaseButton>
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-wrap gap-2 my-1">
+            <div className="flex flex-wrap gap-2 py-3">
                 <BaseButton
                     tooltipLabel="Preview invoice in new tab"
                     onClick={previewPdfInTab}
                     size="sm"
-                    variant={"outline"}
+                    variant="outline"
                 >
-                    <Eye className="w-5 h-5" />
+                    <Eye className="h-4 w-4" />
                     Preview
                 </BaseButton>
                 <BaseButton
                     tooltipLabel="Download invoice PDF"
                     onClick={downloadPdf}
                     size="sm"
-                    variant={"outline"}
+                    variant="outline"
                 >
-                    <DownloadCloudIcon className="w-5 h-5" />
+                    <DownloadCloudIcon className="h-4 w-4" />
                     Download
                 </BaseButton>
 
@@ -69,9 +69,9 @@ export default function FinalPdf() {
                     tooltipLabel="Print invoice"
                     onClick={printPdf}
                     size="sm"
-                    variant={"outline"}
+                    variant="outline"
                 >
-                    <Printer className="w-5 h-5" />
+                    <Printer className="h-4 w-4" />
                     Print
                 </BaseButton>
 
@@ -79,9 +79,9 @@ export default function FinalPdf() {
                     tooltipLabel="Save invoice in website"
                     onClick={saveInvoice}
                     size="sm"
-                    variant={"outline"}
+                    variant="outline"
                 >
-                    <BookmarkIcon className="w-5 h-5" />
+                    <BookmarkIcon className="h-4 w-4" />
                     Save
                 </BaseButton>
 
@@ -89,19 +89,22 @@ export default function FinalPdf() {
                     <BaseButton
                         tooltipLabel="Send invoice PDF to mail"
                         size="sm"
-                        variant={"outline"}
+                        variant="outline"
                     >
-                        <Mail className="w-5 h-5" />
+                        <Mail className="h-4 w-4" />
                         Send to mail
                     </BaseButton>
                 </SendPdfToEmailModal>
             </div>
-            <AspectRatio ratio={1 / 1.4}>
+
+            {/* PDF Viewer with internal scroll */}
+            <div className="flex-1 overflow-y-auto rounded-xl border border-border">
                 <iframe
-                    className="h-full w-full rounded-xl"
+                    className="h-[800px] w-full"
                     src={`${pdfUrl}#toolbar=0`}
+                    title="PDF Preview"
                 />
-            </AspectRatio>
-        </>
+            </div>
+        </div>
     );
 }
