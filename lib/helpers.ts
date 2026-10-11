@@ -7,20 +7,7 @@ import numberToWords from "number-to-words";
 // Currencies
 import currenciesDetails from "@/public/assets/data/currencies.json";
 import { CurrencyDetails } from "@/types";
-
-/**
- * Formats a number with commas and decimal places
- *
- * @param {number} number - Number to format
- * @returns {string} A styled number to be displayed on the invoice
- */
-const formatNumberWithCommas = (number: number) => {
-    return number.toLocaleString("en-US", {
-        style: "decimal",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-    });
-};
+import { formatNumberWithCommas, isDataUrl } from "@/lib/formatting";
 
 /**
  * @param {string} currency - The currency that is currently selected 
@@ -154,14 +141,6 @@ const isValidEmail = (email: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return emailRegex.test(email);
 };
-
-/**
- * A method to check if a string is a data URL
- *
- * @param {string} str - String to check
- * @returns {boolean} Boolean indicating if the string is a data URL
- */
-const isDataUrl = (str: string) => str.startsWith("data:");
 
 /**
  * Dynamically imports and retrieves an invoice template React component based on the provided template ID.

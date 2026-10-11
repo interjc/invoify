@@ -1,3 +1,5 @@
+"use client";
+
 // ShadCn
 import { Card, CardContent } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
@@ -7,6 +9,7 @@ import { BaseButton } from "@/app/components";
 
 // Contexts
 import { useSignatureContext } from "@/contexts/SignatureContext";
+import { useTranslationContext } from "@/contexts/TranslationContext";
 
 // Icons
 import { Check, Trash2 } from "lucide-react";
@@ -22,9 +25,11 @@ const UploadSignature = ({ handleSaveSignature }: UploadSignatureProps) => {
     const {
         uploadSignatureRef,
         uploadSignatureImg,
+        uploadSignatureError,
         handleUploadSignatureChange,
         handleRemoveUploadedSignature,
     } = useSignatureContext();
+    const { _t } = useTranslationContext();
 
     return (
         <TabsContent value={SignatureTabs.UPLOAD}>
@@ -51,6 +56,11 @@ const UploadSignature = ({ handleSaveSignature }: UploadSignatureProps) => {
                             onChange={handleUploadSignatureChange}
                             accept="image/*"
                         />
+                        {uploadSignatureError && (
+                            <p className="text-sm font-medium text-destructive" role="alert">
+                                {_t(`form.steps.summary.signature.imageUpload.${uploadSignatureError}`)}
+                            </p>
+                        )}
                     </div>
                 </CardContent>
                 <div className="flex justify-end gap-2 pt-2">

@@ -126,11 +126,7 @@ export const SIGNATURE_FONTS: SignatureFont[] = [
 /**
  * Form date options
  */
-export const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-};
+export { DATE_OPTIONS } from "@/lib/formatting";
 
 export const SHORT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
     year: "numeric",

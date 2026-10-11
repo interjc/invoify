@@ -62,7 +62,12 @@
                     "placeholder": "点击添加签名",
                     "draw": "手写",
                     "type": "输入",
-                    "upload": "上传"
+                    "upload": "上传",
+                    "imageUpload": {
+                        "invalidImage": "请选择有效的图片文件。",
+                        "tooLarge": "图片过大，无法处理。请选择较小的图片。",
+                        "processingFailed": "无法处理此图片。请尝试其他图片。"
+                    }
                 },
                 "additionalNotes": "附加说明",
                 "paymentTerms": "付款条款",
@@ -84,7 +89,8 @@
         "exportInvoice": "导出发票",
         "newInvoice": "新建发票",
         "generatePdf": "生成PDF",
-        "pdfView": "PDF视图"
+        "pdfView": "PDF视图",
+        "pdfGenerationError": "无法生成 PDF。请重试。"
     },
     "footer": {
         "developedBy": "开发人员"

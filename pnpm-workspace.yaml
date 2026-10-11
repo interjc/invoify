@@ -1,0 +1,11 @@
+overrides:
+  esbuild: 0.25.4
+  '@types/react': 19.2.14
+  '@types/react-dom': 19.2.3
+
+allowBuilds:
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
+  sharp: true
+  workerd: true

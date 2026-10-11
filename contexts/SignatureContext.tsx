@@ -5,6 +5,7 @@ import React, {
     createContext,
     useCallback,
     useContext,
+    useEffect,
     useMemo,
     useRef,
     useState,
@@ -15,6 +16,14 @@ import { useFormContext, useWatch } from "react-hook-form";
 
 // Signature Canvas
 import SignatureCanvas from "react-signature-canvas";
+
+// Uploaded image processing
+import {
+    ImageOptimizationError,
+    optimizeUploadedImage,
+    readImageAsDataUrl,
+    type ImageOptimizationErrorCode,
+} from "@/lib/optimizeUploadedImage";
 
 // Variables
 import { SIGNATURE_COLORS, SIGNATURE_FONTS } from "@/lib/variables";
@@ -41,6 +50,7 @@ const defaultSignatureContext = {
     uploadSignatureRef:
         null as MutableRefObject<HTMLInputElement | null> | null,
     uploadSignatureImg: "",
+    uploadSignatureError: null as ImageOptimizationErrorCode | null,
     handleUploadSignatureChange: (e: React.ChangeEvent<HTMLInputElement>) => {},
     handleRemoveUploadedSignature: () => {},
 };
@@ -59,7 +69,7 @@ export const SignatureContextProvider = ({
     children,
 }: SignatureContextProviderProps) => {
     // Form context
-    const { setValue } = useFormContext();
+    const { setValue, watch } = useFormContext();
 
     const signature = useWatch({
         name: "details.signature.data",
@@ -95,7 +105,7 @@ export const SignatureContextProvider = ({
         if (signatureRef.current) {
             signatureRef.current.clear();
             setSignatureData("");
-            setValue("details.signature", "");
+            setValue("details.signature.data", "");
         }
     }, []);
 
@@ -162,30 +172,62 @@ export const SignatureContextProvider = ({
      */
     const clearTypedSignature = () => {
         setTypedSignature("");
-        setValue("details.signature", "");
+        setValue("details.signature.data", "");
     };
 
     /**
      * * UPLOAD SIGNATURE
      */
     const uploadSignatureRef = useRef<HTMLInputElement | null>(null);
+    const uploadSequenceRef = useRef(0);
     const [uploadSignatureImg, setUploadSignatureImg] = useState<string>("");
+    const [uploadSignatureError, setUploadSignatureError] =
+        useState<ImageOptimizationErrorCode | null>(null);
+
+    useEffect(() => {
+        const subscription = watch((_, { name }) => {
+            // A full RHF reset emits a values event without a field name.
+            if (name !== undefined) return;
+            uploadSequenceRef.current += 1;
+            setUploadSignatureImg("");
+            setUploadSignatureError(null);
+            if (uploadSignatureRef.current) {
+                uploadSignatureRef.current.value = "";
+            }
+        });
+
+        return () => {
+            uploadSequenceRef.current += 1;
+            subscription.unsubscribe();
+        };
+    }, [watch]);
 
     /**
      * Function that fires every time signature file input changes
      * @param e - Event object from file input
      */
-    const handleUploadSignatureChange = (
+    const handleUploadSignatureChange = async (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const file = e.target.files![0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const base64String = event.target!.result as string;
-                setUploadSignatureImg(base64String);
-            };
-            reader.readAsDataURL(file);
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const input = e.currentTarget;
+        const sequence = ++uploadSequenceRef.current;
+        setUploadSignatureError(null);
+        try {
+            const optimizedFile = await optimizeUploadedImage(file);
+            const dataUrl = await readImageAsDataUrl(optimizedFile);
+            if (sequence !== uploadSequenceRef.current) return;
+            setUploadSignatureImg(dataUrl);
+        } catch (error) {
+            if (sequence !== uploadSequenceRef.current) return;
+            setUploadSignatureError(
+                error instanceof ImageOptimizationError
+                    ? error.code
+                    : "processingFailed"
+            );
+            input.value = "";
         }
     };
 
@@ -193,7 +235,9 @@ export const SignatureContextProvider = ({
      * Function that removes uploaded signature
      */
     const handleRemoveUploadedSignature = () => {
+        uploadSequenceRef.current += 1;
         setUploadSignatureImg("");
+        setUploadSignatureError(null);
 
         if (uploadSignatureRef.current) {
             uploadSignatureRef.current.value = "";
@@ -220,6 +264,7 @@ export const SignatureContextProvider = ({
                 clearTypedSignature,
                 uploadSignatureRef,
                 uploadSignatureImg,
+                uploadSignatureError,
                 handleUploadSignatureChange,
                 handleRemoveUploadedSignature,
             }}

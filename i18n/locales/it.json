@@ -62,7 +62,12 @@
                     "placeholder": "Fare clic per aggiungere la firma",
                     "draw": "Disegno",
                     "type": "Digita",
-                    "upload": "Carica"
+                    "upload": "Carica",
+                    "imageUpload": {
+                        "invalidImage": "Scegli un file immagine valido.",
+                        "tooLarge": "Questa immagine è troppo grande. Scegline una più piccola.",
+                        "processingFailed": "Non è stato possibile elaborare questa immagine. Prova con un’altra."
+                    }
                 },
                 "additionalNotes": "Note aggiuntive",
                 "paymentTerms": "Termini di pagamento",
@@ -87,7 +92,8 @@
         "pdfView": "Vista in PDF",
         "livePreview": "Anteprima dal vivo",
         "finalPdf": "PDF finale",
-        "backToLivePreview": "Torna all'anteprima"
+        "backToLivePreview": "Torna all'anteprima",
+        "pdfGenerationError": "Impossibile generare il PDF. Riprova."
     },
     "footer": {
         "developedBy": "Sviluppato da"

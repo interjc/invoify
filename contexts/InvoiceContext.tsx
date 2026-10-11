@@ -5,17 +5,18 @@ import React, {
     useCallback,
     useContext,
     useEffect,
-    useMemo,
+    useRef,
     useState,
 } from "react";
 
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 // RHF
 import { useFormContext } from "react-hook-form";
 
 // Hooks
 import useToasts from "@/hooks/useToasts";
+import { toast } from "@/components/ui/use-toast";
 
 // Services
 import { exportInvoice } from "@/services/invoice/client/exportInvoice";
@@ -23,7 +24,6 @@ import { exportInvoice } from "@/services/invoice/client/exportInvoice";
 // Variables
 import {
     FORM_DEFAULT_VALUES,
-    GENERATE_PDF_API,
     SEND_PDF_API,
     SHORT_DATE_OPTIONS,
 } from "@/lib/variables";
@@ -63,7 +63,7 @@ type InvoiceContextProviderProps = {
 export const InvoiceContextProvider = ({
     children,
 }: InvoiceContextProviderProps) => {
-  const router = useRouter();
+  const t = useTranslations();
 
   // Toasts
   const {
@@ -80,15 +80,22 @@ export const InvoiceContextProvider = ({
   const { getValues, reset } = useFormContext<InvoiceType>();
 
   // Variables
-  const [invoicePdf, setInvoicePdf] = useState<Blob>(new Blob());
+  const [invoicePdf, setInvoicePdf] = useState<Blob>(() => new Blob());
   const [invoicePdfLoading, setInvoicePdfLoading] = useState<boolean>(false);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const generationController = useRef<AbortController | null>(null);
+
+  useEffect(() => () => {
+    generationController.current?.abort();
+    generationController.current = null;
+  }, []);
 
   // Saved invoices
   const [savedInvoices, setSavedInvoices] = useState<InvoiceType[]>([]);
 
   useEffect(() => {
     let savedInvoicesDefault;
-    if (typeof window !== undefined) {
+    if (typeof window !== "undefined") {
       // Saved invoices variables
             const savedInvoicesJSON =
                 window.localStorage.getItem("savedInvoices");
@@ -100,12 +107,19 @@ export const InvoiceContextProvider = ({
   }, []);
 
   // Get pdf url from blob
-  const pdfUrl = useMemo(() => {
-    if (invoicePdf.size > 0) {
-      return window.URL.createObjectURL(invoicePdf);
-    }
-    return null;
+  useEffect(() => {
+    const url = invoicePdf.size > 0 ? URL.createObjectURL(invoicePdf) : null;
+    setPdfUrl(url);
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
   }, [invoicePdf]);
+
+  const cancelGeneration = () => {
+    generationController.current?.abort();
+    generationController.current = null;
+    setInvoicePdfLoading(false);
+  };
 
   /**
    * Handles form submission.
@@ -113,21 +127,17 @@ export const InvoiceContextProvider = ({
    * @param {InvoiceType} data - The form values used to generate the PDF.
    */
   const onFormSubmit = (data: InvoiceType) => {
-    console.log("VALUE");
-    console.log(data);
-
     // Call generate pdf method
-    generatePdf(data);
+    void generatePdf(data);
   };
 
   /**
    * Generates a new invoice.
    */
   const newInvoice = () => {
+    cancelGeneration();
     reset(FORM_DEFAULT_VALUES);
     setInvoicePdf(new Blob());
-
-    router.refresh();
 
     // Toast
     newInvoiceSuccess();
@@ -141,32 +151,37 @@ export const InvoiceContextProvider = ({
    * @throws {Error} - If an error occurs during the PDF generation process.
    */
   const generatePdf = useCallback(async (data: InvoiceType) => {
+    // State updates are asynchronous; a ref also blocks repeated submissions
+    // in the same frame before the Generate button becomes disabled.
+    if (generationController.current) return;
+    const controller = new AbortController();
+    generationController.current = controller;
     setInvoicePdfLoading(true);
 
     try {
-      const response = await fetch(GENERATE_PDF_API, {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.blob();
+      const { generateInvoicePdf } = await import("@/services/invoice/client/generatePdf");
+      const result = await generateInvoicePdf(data, controller.signal);
+      if (controller.signal.aborted) return;
       setInvoicePdf(result);
-
-      if (result.size > 0) {
-        // Toast
-        pdfGenerationSuccess();
-      }
+      pdfGenerationSuccess();
     } catch (err) {
-      console.log(err);
+      if (!controller.signal.aborted) {
+        console.error("PDF generation failed", err);
+        toast({ variant: "destructive", description: t("actions.pdfGenerationError") });
+      }
     } finally {
-      setInvoicePdfLoading(false);
+      if (generationController.current === controller) {
+        generationController.current = null;
+        setInvoicePdfLoading(false);
+      }
     }
-  }, []);
+  }, [pdfGenerationSuccess, t]);
 
   /**
    * Removes the final PDF file and switches to Live Preview
    */
   const removeFinalPdf = () => {
+    cancelGeneration();
     setInvoicePdf(new Blob());
   };
 
@@ -174,9 +189,8 @@ export const InvoiceContextProvider = ({
    * Generates a preview of a PDF file and opens it in a new browser tab.
    */
   const previewPdfInTab = () => {
-    if (invoicePdf) {
-      const url = window.URL.createObjectURL(invoicePdf);
-      window.open(url, "_blank");
+    if (pdfUrl) {
+      window.open(pdfUrl, "_blank");
     }
   };
 
@@ -185,21 +199,17 @@ export const InvoiceContextProvider = ({
    */
   const downloadPdf = () => {
     // Only download if there is an invoice
-    if (invoicePdf instanceof Blob && invoicePdf.size > 0) {
-      // Create a blob URL to trigger the download
-      const url = window.URL.createObjectURL(invoicePdf);
-
+    if (pdfUrl) {
       // Create an anchor element to initiate the download
       const a = document.createElement("a");
-      a.href = url;
+      a.href = pdfUrl;
       a.download = "invoice.pdf";
       document.body.appendChild(a);
 
       // Trigger the download
       a.click();
 
-      // Clean up the URL object
-      window.URL.revokeObjectURL(url);
+      a.remove();
     }
   };
 
@@ -207,8 +217,7 @@ export const InvoiceContextProvider = ({
    * Prints a PDF file.
    */
   const printPdf = () => {
-    if (invoicePdf) {
-      const pdfUrl = URL.createObjectURL(invoicePdf);
+    if (pdfUrl) {
       const printWindow = window.open(pdfUrl, "_blank");
       if (printWindow) {
         printWindow.onload = () => {

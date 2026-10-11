@@ -62,7 +62,12 @@
                     "placeholder": "Klikk for å legge til signatur",
                     "draw": "Tegn",
                     "type": "Skriv",
-                    "upload": "Last opp"
+                    "upload": "Last opp",
+                    "imageUpload": {
+                        "invalidImage": "Velg en gyldig bildefil.",
+                        "tooLarge": "Bildet er for stort til å behandles. Velg et mindre bilde.",
+                        "processingFailed": "Bildet kunne ikke behandles. Prøv et annet bilde."
+                    }
                 },
                 "additionalNotes": "Tilleggsnotater",
                 "paymentTerms": "Betalingsbetingelser",
@@ -87,7 +92,8 @@
         "pdfView": "PDF-visning",
         "livePreview": "Forhåndsvisning",
         "finalPdf": "Endelig PDF",
-        "backToLivePreview": "Tilbake til forhåndsvisning"
+        "backToLivePreview": "Tilbake til forhåndsvisning",
+        "pdfGenerationError": "Kunne ikke opprette PDF-en. Prøv igjen."
     },
     "footer": {
         "developedBy": "Utviklet av"

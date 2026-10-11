@@ -62,7 +62,12 @@
           "placeholder": "İmza eklemek için tıklayın",
           "draw": "Çiz",
           "type": "Yaz",
-          "upload": "Yükle"
+          "upload": "Yükle",
+          "imageUpload": {
+              "invalidImage": "Geçerli bir görsel dosyası seçin.",
+              "tooLarge": "Bu görsel işlenemeyecek kadar büyük. Daha küçük bir görsel seçin.",
+              "processingFailed": "Bu görsel işlenemedi. Başka bir görsel deneyin."
+          }
         },
         "additionalNotes": "Ek Notlar",
         "paymentTerms": "Ödeme Şartları",
@@ -87,7 +92,8 @@
         "pdfView": "PDF Görünümü",
         "livePreview": "Canlı önizleme",
         "finalPdf": "Son PDF",
-        "backToLivePreview": "Canlı önizlemeye dön"
+        "backToLivePreview": "Canlı önizlemeye dön",
+      "pdfGenerationError": "PDF oluşturulamadı. Lütfen tekrar deneyin."
     },
   "footer": {
     "developedBy": "Oluşturan"

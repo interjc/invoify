@@ -62,7 +62,12 @@
 					"placeholder": "Click para afegir una firma",
 					"draw": "Dibuixar",
 					"type": "Escriure",
-					"upload": "Pujar"
+					"upload": "Pujar",
+					"imageUpload": {
+					    "invalidImage": "Trieu un fitxer d’imatge vàlid.",
+					    "tooLarge": "Aquesta imatge és massa gran per processar-la. Trieu-ne una de més petita.",
+					    "processingFailed": "No s’ha pogut processar aquesta imatge. Proveu-ne una altra."
+					}
 				},
 				"additionalNotes": "Notes adicionals",
 				"paymentTerms": "Condicions de pagament",
@@ -87,7 +92,8 @@
         "pdfView": "Veure PDF",
         "livePreview": "Vista prèvia en viu",
         "finalPdf": "PDF final",
-        "backToLivePreview": "Tornar a la vista prèvia"
+        "backToLivePreview": "Tornar a la vista prèvia",
+	    "pdfGenerationError": "No s’ha pogut generar el PDF. Torneu-ho a provar."
     },
 	"footer": {
 		"developedBy": "Desenvolupat per"

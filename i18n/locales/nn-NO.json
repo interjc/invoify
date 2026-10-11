@@ -62,7 +62,12 @@
                     "placeholder": "Klikk for å legge til signatur",
                     "draw": "Teikn",
                     "type": "Skriv",
-                    "upload": "Last opp"
+                    "upload": "Last opp",
+                    "imageUpload": {
+                        "invalidImage": "Vel ein gyldig biletfil.",
+                        "tooLarge": "Biletet er for stort til å handsamast. Vel eit mindre bilete.",
+                        "processingFailed": "Biletet kunne ikkje handsamast. Prøv eit anna bilete."
+                    }
                 },
                 "additionalNotes": "Tilleggsnotatar",
                 "paymentTerms": "Betalingsvilkår",
@@ -87,7 +92,8 @@
         "pdfView": "PDF-vising",
         "livePreview": "Førehandsvising",
         "finalPdf": "Endeleg PDF",
-        "backToLivePreview": "Tilbake til førehandsvising"
+        "backToLivePreview": "Tilbake til førehandsvising",
+        "pdfGenerationError": "Kunne ikkje lage PDF-en. Prøv på nytt."
     },
     "footer": {
         "developedBy": "Utvikla av"

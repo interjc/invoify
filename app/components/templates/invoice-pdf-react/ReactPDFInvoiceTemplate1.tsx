@@ -1,14 +1,11 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
 // Types
-import { InvoiceType } from '@/types';
+import type { InvoiceType } from '@/types';
 
 // Helpers
-import { formatNumberWithCommas, isDataUrl } from '@/lib/helpers';
-
-// Variables
-import { DATE_OPTIONS } from '@/lib/variables';
+import { formatNumberWithCommas, isDataUrl, DATE_OPTIONS } from '@/lib/formatting';
 
 const styles = StyleSheet.create({
   page: {

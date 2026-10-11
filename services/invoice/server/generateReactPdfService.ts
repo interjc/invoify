@@ -1,22 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { renderToBuffer } from '@react-pdf/renderer';
 
 // Types
-import { InvoiceType } from "@/types";
-
-// React PDF Templates
-import ReactPDFInvoiceTemplate1 from "@/app/components/templates/invoice-pdf-react/ReactPDFInvoiceTemplate1";
-
-/**
- * Get the React PDF template component by ID
- */
-function getReactPDFTemplate(templateId: number) {
-  switch (templateId) {
-    case 1:
-    default:
-      return ReactPDFInvoiceTemplate1;
-  }
-}
+import { invoiceInputErrorResponse, readInvoiceRequest } from "@/lib/invoiceRequest";
 
 /**
  * Generate a PDF document using React-PDF
@@ -28,15 +13,9 @@ function getReactPDFTemplate(templateId: number) {
  */
 export async function generateReactPdfService(req: NextRequest) {
   try {
-    const body: InvoiceType = await req.json();
-    const templateId = body.details.pdfTemplate;
-    
-    // Get the React PDF template
-    const TemplateComponent = getReactPDFTemplate(templateId);
-    const document = TemplateComponent(body);
-    
-    // Generate PDF buffer
-    const pdfBuffer = await renderToBuffer(document);
+    const body = await readInvoiceRequest(req, true);
+    const { renderReactPdf } = await import("./renderReactPdf");
+    const pdfBuffer = await renderReactPdf(body);
     
     return new NextResponse(pdfBuffer, {
       headers: {
@@ -48,6 +27,8 @@ export async function generateReactPdfService(req: NextRequest) {
       status: 200,
     });
   } catch (error) {
+    const inputError = invoiceInputErrorResponse(error);
+    if (inputError) return inputError;
     console.error("React PDF Generation Error:", error);
     return new NextResponse(
       JSON.stringify({ 

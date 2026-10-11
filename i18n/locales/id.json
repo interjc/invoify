@@ -62,7 +62,12 @@
           "placeholder": "Klik untuk menambah tanda tangan",
           "draw": "Gambar",
           "type": "Ketik",
-          "upload": "Unggah"
+          "upload": "Unggah",
+          "imageUpload": {
+              "invalidImage": "Pilih file gambar yang valid.",
+              "tooLarge": "Gambar ini terlalu besar untuk diproses. Pilih gambar yang lebih kecil.",
+              "processingFailed": "Gambar ini tidak dapat diproses. Coba gambar lain."
+          }
         },
         "additionalNotes": "Catatan Tambahan",
         "paymentTerms": "Syarat Pembayaran",
@@ -87,7 +92,8 @@
         "pdfView": "Tampilan PDF",
         "livePreview": "Pratinjau Langsung",
         "finalPdf": "PDF Final",
-        "backToLivePreview": "Kembali ke Pratinjau"
+        "backToLivePreview": "Kembali ke Pratinjau",
+      "pdfGenerationError": "PDF tidak dapat dibuat. Silakan coba lagi."
     },
   "footer": {
     "developedBy": "Dikembangkan oleh"

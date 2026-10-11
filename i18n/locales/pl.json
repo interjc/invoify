@@ -62,7 +62,12 @@
                     "placeholder": "Kliknij, aby dodać podpis",
                     "draw": "Narysuj",
                     "type": "Wpisz",
-                    "upload": "Prześlij"
+                    "upload": "Prześlij",
+                    "imageUpload": {
+                        "invalidImage": "Wybierz prawidłowy plik obrazu.",
+                        "tooLarge": "Ten obraz jest zbyt duży do przetworzenia. Wybierz mniejszy obraz.",
+                        "processingFailed": "Nie udało się przetworzyć tego obrazu. Spróbuj użyć innego."
+                    }
                 },
                 "additionalNotes": "Dodatkowe uwagi",
                 "paymentTerms": "Warunki płatności",
@@ -87,7 +92,8 @@
         "pdfView": "Podgląd PDF",
         "livePreview": "Podgląd na żywo",
         "finalPdf": "Ostateczny PDF",
-        "backToLivePreview": "Wróć do podglądu"
+        "backToLivePreview": "Wróć do podglądu",
+        "pdfGenerationError": "Nie udało się wygenerować pliku PDF. Spróbuj ponownie."
     },
     "footer": {
         "developedBy": "Opracowane przez"

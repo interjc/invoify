@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Services
 import { sendPdfToEmailService } from "@/services/invoice/server/sendPdfToEmailService";
+import { invoiceInputErrorResponse } from "@/lib/invoiceRequest";
 
 export async function POST(req: NextRequest) {
     try {
@@ -17,6 +18,8 @@ export async function POST(req: NextRequest) {
             });
         }
     } catch (err) {
+        const inputError = invoiceInputErrorResponse(err);
+        if (inputError) return inputError;
         console.log(err);
         return new NextResponse("Failed to send email", { status: 500 });
     }

@@ -3,9 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 // React PDF Service
 import { generateReactPdfService } from "./generateReactPdfService";
 
-// Types
-import { InvoiceType } from "@/types";
-
 /**
  * Generate a PDF document of an invoice using React-PDF.
  * This is the main entry point that delegates to the React-PDF service.

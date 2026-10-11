@@ -62,7 +62,12 @@
           "placeholder": "اضغط لإضافة التوقيع",
           "draw": "رسم",
           "type": "كتابة",
-          "upload": "تحميل"
+          "upload": "تحميل",
+          "imageUpload": {
+              "invalidImage": "اختر ملف صورة صالحًا.",
+              "tooLarge": "الصورة كبيرة جدًا للمعالجة. اختر صورة أصغر.",
+              "processingFailed": "تعذرت معالجة هذه الصورة. جرّب صورة أخرى."
+          }
         },
         "additionalNotes": "ملاحظات إضافية",
         "paymentTerms": "شروط الدفع",
@@ -87,7 +92,8 @@
         "pdfView": "عرض PDF",
         "livePreview": "معاينة مباشرة",
         "finalPdf": "PDF النهائي",
-        "backToLivePreview": "العودة إلى المعاينة المباشرة"
+        "backToLivePreview": "العودة إلى المعاينة المباشرة",
+      "pdfGenerationError": "تعذر إنشاء ملف PDF. يُرجى المحاولة مرة أخرى."
     },
   "footer": {
     "developedBy": "تم تطويره بواسطة"

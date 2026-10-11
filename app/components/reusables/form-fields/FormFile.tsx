@@ -1,6 +1,15 @@
 "use client";
 
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+
+// Image processing
+import {
+    ImageOptimizationError,
+    optimizeUploadedImage,
+    readImageAsDataUrl,
+    type ImageOptimizationErrorCode,
+} from "@/lib/optimizeUploadedImage";
+import { useTranslationContext } from "@/contexts/TranslationContext";
 
 // RHF
 import { useFormContext, useWatch } from "react-hook-form";
@@ -30,32 +39,65 @@ type FormFileProps = {
 };
 
 const FormFile = ({ name, label, placeholder }: FormFileProps) => {
-    const { control, setValue } = useFormContext();
+    const { control, setValue, watch } = useFormContext();
 
     const logoImage = useWatch({
         name: name,
         control,
     });
 
-    const [base64Image, setBase64Image] = useState<string>(logoImage ?? "");
+    const base64Image = logoImage ?? "";
+    const [uploadError, setUploadError] = useState<ImageOptimizationErrorCode | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const uploadSequenceRef = useRef(0);
 
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files![0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const base64String = event.target!.result as string;
-                setBase64Image(base64String);
-                setValue(name, base64String); // Set the value for form submission
-            };
-            reader.readAsDataURL(file);
+    const { _t } = useTranslationContext();
+
+    useEffect(() => {
+        const subscription = watch((_, { name }) => {
+            // RHF emits a values event without a field name for reset().
+            // Named field updates, including this upload's own setValue, leave it alone.
+            if (name !== undefined) return;
+            uploadSequenceRef.current += 1;
+            setUploadError(null);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
+        });
+
+        return () => {
+            uploadSequenceRef.current += 1;
+            subscription.unsubscribe();
+        };
+    }, [watch]);
+
+    const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const input = e.currentTarget;
+        const sequence = ++uploadSequenceRef.current;
+        setUploadError(null);
+        try {
+            const optimizedFile = await optimizeUploadedImage(file);
+            const dataUrl = await readImageAsDataUrl(optimizedFile);
+            if (sequence !== uploadSequenceRef.current) return;
+            setValue(name, dataUrl);
+        } catch (error) {
+            if (sequence !== uploadSequenceRef.current) return;
+            setUploadError(
+                error instanceof ImageOptimizationError
+                    ? error.code
+                    : "processingFailed"
+            );
+            input.value = "";
         }
     };
 
     const removeLogo = () => {
-        setBase64Image("");
+        uploadSequenceRef.current += 1;
         setValue(name, "");
+        setUploadError(null);
 
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
@@ -111,6 +153,11 @@ const FormFile = ({ name, label, placeholder }: FormFileProps) => {
                                     </>
                                 </Label>
                             </div>
+                        )}
+                        {uploadError && (
+                            <p className="text-sm font-medium text-destructive" role="alert">
+                                {_t(`form.steps.summary.signature.imageUpload.${uploadError}`)}
+                            </p>
                         )}
                     </FormItem>
                 )}

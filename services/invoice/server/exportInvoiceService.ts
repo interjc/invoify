@@ -1,96 +1,49 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// JSON2CSV
-import { AsyncParser } from "@json2csv/node";
-
-// XML2JS
-import { Builder } from "xml2js";
-
-// XLSX
-import XLSX from "xlsx";
-
-// Helpers
-import { flattenObject } from "@/lib/helpers";
-
-// Types
+import { invoiceInputErrorResponse, readInvoiceRequest } from "@/lib/invoiceRequest";
 import { ExportTypes } from "@/types";
 
-/**
- * Export an invoice in selected format.
- *
- * @param {NextRequest} req - The Next.js request object.
- * @returns {NextResponse} A response object containing the exported data in the requested format.
- */
+/** Export only bounded invoice data, loading a serializer when it is requested. */
 export async function exportInvoiceService(req: NextRequest) {
-    const body = await req.json();
     const format = req.nextUrl.searchParams.get("format");
+    if (format !== ExportTypes.JSON && format !== ExportTypes.CSV && format !== ExportTypes.XML) {
+        return NextResponse.json({ error: "Unsupported export format" }, { status: 400 });
+    }
 
     try {
+        const body = await readInvoiceRequest(req);
         switch (format) {
             case ExportTypes.JSON:
-                const jsonData = JSON.stringify(body);
-                return new NextResponse(jsonData, {
+                return new NextResponse(JSON.stringify(body), {
                     headers: {
                         "Content-Type": "application/json",
-                        "Content-Disposition":
-                            "attachment; filename=invoice.json",
+                        "Content-Disposition": "attachment; filename=invoice.json",
                     },
-                    status: 200,
                 });
-            case ExportTypes.CSV:
-                //? Can pass specific fields to async parser. Empty = All
-                const parser = new AsyncParser();
-                const csv = await parser.parse(body).promise();
+            case ExportTypes.CSV: {
+                const { AsyncParser } = await import("@json2csv/node");
+                const csv = await new AsyncParser().parse(body).promise();
                 return new NextResponse(csv, {
                     headers: {
                         "Content-Type": "text/csv",
-                        "Content-Disposition":
-                            "attachment; filename=invoice.csv",
+                        "Content-Disposition": "attachment; filename=invoice.csv",
                     },
                 });
-            case ExportTypes.XML:
-                // Convert JSON to XML
-                const builder = new Builder();
-                const xml = builder.buildObject(body);
-                return new NextResponse(xml, {
+            }
+            case ExportTypes.XML: {
+                const { Builder } = await import("xml2js");
+                return new NextResponse(new Builder().buildObject(body), {
                     headers: {
                         "Content-Type": "application/xml",
-                        "Content-Disposition":
-                            "attachment; filename=invoice.xml",
+                        "Content-Disposition": "attachment; filename=invoice.xml",
                     },
                 });
-            // case ExportTypes.XLSX:
-            //     const flattenedData = flattenObject(body);
-
-            //     // Create a new worksheet and add the data
-            //     const worksheet = XLSX.utils.json_to_sheet([flattenedData]);
-            //     const workbook = XLSX.utils.book_new();
-            //     XLSX.utils.book_append_sheet(
-            //         workbook,
-            //         worksheet,
-            //         "invoice-worksheet"
-            //     );
-            //     // Generate the XLSX file as a buffer
-            //     const buffer = XLSX.write(workbook, {
-            //         bookType: "xlsx",
-            //         type: "buffer",
-            //     });
-
-            //     return new NextResponse(buffer, {
-            //         headers: {
-            //             "Content-Type":
-            //                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            //             "Content-Disposition":
-            //                 "attachment; filename=invoice.xlsx",
-            //         },
-            //     });
+            }
         }
     } catch (error) {
-        console.error(error);
-
-        // Return an error response
-        return new Response(`Error exporting: \n${error}`, {
-            status: 500,
-        });
+        const inputError = invoiceInputErrorResponse(error);
+        if (inputError) return inputError;
+        console.error("Invoice export failed", error);
+        return NextResponse.json({ error: "Failed to export invoice" }, { status: 500 });
     }
 }

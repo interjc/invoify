@@ -1,6 +1,14 @@
 import { defineCloudflareConfig } from "@opennextjs/cloudflare";
-import r2IncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/r2-incremental-cache";
+import staticAssetsIncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/static-assets-incremental-cache";
 
-export default defineCloudflareConfig({
-  incrementalCache: r2IncrementalCache,
+const config = defineCloudflareConfig({
+  // Invoice data lives in the browser; page shells only change on deployment.
+  incrementalCache: staticAssetsIncrementalCache,
+  enableCacheInterception: true,
 });
+
+// Turbopack emits hashed external ESM imports that OpenNext cannot bundle.
+// Use Webpack for the Worker build so the lazy PDF fallback includes regular React.
+config.buildCommand = "pnpm build --webpack";
+
+export default config;

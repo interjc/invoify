@@ -18,13 +18,14 @@ import { Analytics } from "@vercel/analytics/react";
 
 // Next Intl
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 
 // ShadCn
 import { Toaster } from "@/components/ui/toaster";
 
 // Components
-import { BaseNavbar, BaseFooter } from "@/app/components";
+import BaseNavbar from "@/app/components/layout/BaseNavbar";
+import BaseFooter from "@/app/components/layout/BaseFooter";
 
 // Contexts
 import Providers from "@/contexts/Providers";
@@ -78,6 +79,8 @@ export default async function LocaleLayout({
     
     // Validate that the incoming `locale` parameter is valid
     if (!LOCALES.some((l) => l.code === locale)) notFound();
+
+    setRequestLocale(locale);
 
     // Providing all messages to the client
     // side is the easiest way to get started

@@ -99,11 +99,13 @@ export default function FinalPdf() {
 
             {/* PDF Viewer with internal scroll */}
             <div className="flex-1 overflow-y-auto rounded-xl border border-border">
-                <iframe
-                    className="h-[800px] w-full"
-                    src={`${pdfUrl}#toolbar=0`}
-                    title="PDF Preview"
-                />
+                {pdfUrl && (
+                    <iframe
+                        className="h-[800px] w-full"
+                        src={`${pdfUrl}#toolbar=0`}
+                        title="PDF Preview"
+                    />
+                )}
             </div>
         </div>
     );

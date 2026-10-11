@@ -62,7 +62,12 @@
                     "placeholder": "Unterschrift hinzufügen",
                     "draw": "Zeichnen",
                     "type": "Typ",
-                    "upload": "Hochladen"
+                    "upload": "Hochladen",
+                    "imageUpload": {
+                        "invalidImage": "Wähle eine gültige Bilddatei aus.",
+                        "tooLarge": "Dieses Bild ist zu groß. Wähle ein kleineres Bild aus.",
+                        "processingFailed": "Dieses Bild konnte nicht verarbeitet werden. Probiere ein anderes Bild aus."
+                    }
                 },
                 "additionalNotes": "Notizen",
                 "paymentTerms": "Zahlungsbedingungen",
@@ -87,7 +92,8 @@
         "pdfView": "PDF-Ansicht",
         "livePreview": "Live-Vorschau",
         "finalPdf": "Endgültiges PDF",
-        "backToLivePreview": "Zurück zur Live-Vorschau"
+        "backToLivePreview": "Zurück zur Live-Vorschau",
+        "pdfGenerationError": "Das PDF konnte nicht erstellt werden. Bitte versuche es erneut."
     },
     "footer": {
         "developedBy": "Entwickelt von"

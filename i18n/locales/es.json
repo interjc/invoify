@@ -62,7 +62,12 @@
                     "placeholder": "Click para añadir una firma",
                     "draw": "Dibujar",
                     "type": "Escribir",
-                    "upload": "Subir"
+                    "upload": "Subir",
+                    "imageUpload": {
+                        "invalidImage": "Elige un archivo de imagen válido.",
+                        "tooLarge": "La imagen es demasiado grande para procesarla. Elige una más pequeña.",
+                        "processingFailed": "No se pudo procesar esta imagen. Prueba con otra."
+                    }
                 },
                 "additionalNotes": "Notas adicionales",
                 "paymentTerms": "Términos de pago",
@@ -87,7 +92,8 @@
         "pdfView": "Ver PDF",
         "livePreview": "Vista previa en vivo",
         "finalPdf": "PDF final",
-        "backToLivePreview": "Volver a vista previa en vivo"
+        "backToLivePreview": "Volver a vista previa en vivo",
+        "pdfGenerationError": "No se pudo generar el PDF. Inténtalo de nuevo."
     },
     "footer": {
         "developedBy": "Desarrollado por"

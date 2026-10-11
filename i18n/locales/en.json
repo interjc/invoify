@@ -62,7 +62,12 @@
                     "placeholder": "Click to add signature",
                     "draw": "Draw",
                     "type": "Type",
-                    "upload": "Upload"
+                    "upload": "Upload",
+                    "imageUpload": {
+                        "invalidImage": "Choose a valid image file.",
+                        "tooLarge": "This image is too large to process. Choose a smaller image.",
+                        "processingFailed": "This image could not be processed. Try another image."
+                    }
                 },
                 "additionalNotes": "Additional Notes",
                 "paymentTerms": "Payment Terms",
@@ -87,7 +92,8 @@
         "pdfView": "PDF View",
         "livePreview": "Live Preview",
         "finalPdf": "Final PDF",
-        "backToLivePreview": "Back to Live Preview"
+        "backToLivePreview": "Back to Live Preview",
+        "pdfGenerationError": "Could not generate the PDF. Please try again."
     },
     "footer": {
         "developedBy": "Developed by"

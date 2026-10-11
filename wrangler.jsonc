@@ -2,6 +2,14 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "invoify",
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.1
+    }
+  },
   "compatibility_date": "2025-02-20",
   "compatibility_flags": [
     "nodejs_compat",
