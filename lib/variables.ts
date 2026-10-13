@@ -44,6 +44,12 @@ export const TAILWIND_CDN =
 export const GOOGLE_SC_VERIFICATION = process.env.GOOGLE_SC_VERIFICATION;
 
 /**
+ * Microsoft Clarity
+ */
+export const CLARITY_PROJECT_ID =
+    process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID || "mfw57bbfor";
+
+/**
  * Nodemailer
  */
 export const NODEMAILER_EMAIL = process.env.NODEMAILER_EMAIL;

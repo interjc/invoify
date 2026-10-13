@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 
 // Fonts
 import {
@@ -34,7 +35,12 @@ import Providers from "@/contexts/Providers";
 import { JSONLD, ROOTKEYWORDS } from "@/lib/seo";
 
 // Variables
-import { BASE_URL, GOOGLE_SC_VERIFICATION, LOCALES } from "@/lib/variables";
+import {
+    BASE_URL,
+    CLARITY_PROJECT_ID,
+    GOOGLE_SC_VERIFICATION,
+    LOCALES,
+} from "@/lib/variables";
 
 export const metadata: Metadata = {
     title: "Invoify | Free Invoice Generator",
@@ -113,6 +119,23 @@ export default async function LocaleLayout({
                         <Analytics />
                     </Providers>
                 </NextIntlClientProvider>
+
+                {/* Microsoft Clarity */}
+                {CLARITY_PROJECT_ID && (
+                    <Script
+                        id="microsoft-clarity"
+                        strategy="afterInteractive"
+                        dangerouslySetInnerHTML={{
+                            __html: `
+                                (function(c,l,a,r,i,t,y){
+                                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                                })(window, document, "clarity", "script", "${CLARITY_PROJECT_ID}");
+                            `,
+                        }}
+                    />
+                )}
             </body>
         </html>
     );
