@@ -145,13 +145,18 @@ ANALYZE=true pnpm build
 
 This project is optimized for deployment to Cloudflare Workers:
 
+For Cloudflare Builds, set the build command to `pnpm build:cf`. This prepares the PDF WASM asset and populates the static assets incremental cache. The cache is read-only at runtime; without this build step, prerendered pages can return `MISS` and render through SSR.
+
 ```bash
 # Build and preview locally
 pnpm preview
 
-# Build and deploy to production
-pnpm deploy
+# Deploy or upload an existing Cloudflare build
+pnpm exec opennextjs-cloudflare deploy
+pnpm exec opennextjs-cloudflare upload
 ```
+
+The `pnpm deploy` and `pnpm upload` scripts also work; they run `pnpm build:cf` first. After deployment, check a prerendered page with `curl -I https://invoice.vibany.com/en` and look for `x-opennext-cache: HIT`.
 
 **Requirements**:
 - Cloudflare account

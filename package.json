@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "build:cf": "opennextjs-cloudflare build && node scripts/prepareCloudflarePdf.mjs",
+    "build:cf": "opennextjs-cloudflare build && node scripts/prepareCloudflarePdf.mjs && opennextjs-cloudflare populateCache local",
     "start": "next start",
     "lint": "next lint",
     "preview": "pnpm build:cf && opennextjs-cloudflare preview",
