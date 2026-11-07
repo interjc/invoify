@@ -4,7 +4,8 @@
   "name": "invoify",
   "observability": {
     "enabled": true,
-    "head_sampling_rate": 1,
+    // Log sampling 10%: most requests are 404s from vulnerability scanners (2026-11 Workers Logs).
+    "head_sampling_rate": 0.1,
     "traces": {
       "enabled": true,
       "head_sampling_rate": 0.1
