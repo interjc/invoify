@@ -28,27 +28,27 @@ export const LOCALE_SEO: Record<string, LocaleSeo> = {
     de: {
         title: "Kostenloser Rechnungsgenerator (PDF) | Vibany",
         description:
-            "Erstellen Sie kostenlos professionelle Rechnungen online. Formular ausfüllen, live ansehen und in Sekunden als PDF herunterladen – ohne Anmeldung.",
+            "Erstellen Sie kostenlos professionelle Rechnungen online. Formular ausfüllen, Live-Vorschau prüfen und in Sekunden als PDF herunterladen – ohne Anmeldung.",
     },
     it: {
         title: "Generatore di Fatture Gratis (PDF) | Vibany",
         description:
-            "Crea fatture professionali online gratis. Compila il modulo, guarda l'anteprima in tempo reale e scarica la fattura in PDF in pochi secondi, senza registrazione.",
+            "Crea fatture professionali online gratis. Compila il modulo, visualizza l'anteprima in tempo reale e scarica il PDF in pochi secondi, senza registrazione.",
     },
     es: {
         title: "Generador de Facturas Gratis (PDF) | Vibany",
         description:
-            "Crea facturas profesionales online gratis. Rellena el formulario, mira la vista previa en tiempo real y descarga tu factura en PDF en segundos, sin registro.",
+            "Crea facturas profesionales online gratis. Completa el formulario, previsualiza en tiempo real y descarga tu factura en PDF en segundos, sin registro.",
     },
     ca: {
         title: "Generador de Factures Gratuït (PDF) | Vibany",
         description:
-            "Crea factures professionals en línia de franc. Omple el formulari, mira la vista prèvia en temps real i descarrega la factura en PDF en segons, sense registre.",
+            "Crea factures professionals en línia gratuïtament. Omple el formulari, previsualitza-les en temps real i descarrega el PDF en pocs segons, sense registre.",
     },
     fr: {
         title: "Générateur de Factures Gratuit (PDF) | Vibany",
         description:
-            "Créez gratuitement des factures professionnelles en ligne. Remplissez le formulaire, prévisualisez en direct et téléchargez votre facture PDF en quelques secondes, sans inscription.",
+            "Créez gratuitement des factures professionnelles en ligne. Remplissez le formulaire, consultez l'aperçu en temps réel et téléchargez le PDF sans inscription.",
     },
     ar: {
         title: "مولد فواتير مجاني (PDF) | Vibany",
@@ -68,24 +68,44 @@ export const LOCALE_SEO: Record<string, LocaleSeo> = {
     tr: {
         title: "Ücretsiz Fatura Oluşturucu (PDF) | Vibany",
         description:
-            "Profesyonel faturaları çevrimiçi ve ücretsiz oluşturun. Formu doldurun, canlı önizleyin ve faturanızı saniyeler içinde PDF olarak indirin. Kayıt gerekmez.",
+            "Profesyonel faturaları online ve ücretsiz oluşturun. Formu doldurun, canlı ön izleme yapın ve faturanızı saniyeler içinde PDF olarak indirin. Kayıt gerekmez.",
     },
     ja: {
-        title: "無料請求書作成ツール（PDF）| Vibany",
+        title: "無料請求書作成ツール (PDF) | Vibany",
         description:
             "請求書をオンラインで無料作成。フォームに入力してリアルタイムでプレビューし、数秒でPDFの請求書をダウンロードできます。登録不要。",
     },
     "nb-NO": {
         title: "Gratis fakturagenerator (PDF) | Vibany",
         description:
-            "Lag profesjonelle fakturaer gratis på nett. Fyll ut skjemaet, se forhåndsvisning direkte og last ned fakturaen som PDF på sekunder – uten registrering.",
+            "Lag profesjonelle fakturaer gratis på nett. Fyll ut skjemaet, se forhåndsvisning direkte og last ned fakturaen som PDF på få sekunder – uten registrering.",
     },
     "nn-NO": {
         title: "Gratis fakturagenerator (PDF) | Vibany",
         description:
-            "Lag profesjonelle fakturaer gratis på nett. Fyll ut skjemaet, sjå førehandsvising direkte og last ned fakturaen som PDF på sekund – utan registrering.",
+            "Lag profesjonelle fakturaar gratis på nett. Fyll ut skjemaet, sjå førehandsvising direkte og last ned fakturaen som PDF på få sekund – utan registrering.",
     },
 };
+
+/** Open Graph wants language_TERRITORY with an underscore. */
+const OG_LOCALE: Record<string, string> = {
+    en: "en_US",
+    de: "de_DE",
+    it: "it_IT",
+    es: "es_ES",
+    ca: "ca_ES",
+    fr: "fr_FR",
+    ar: "ar_AR",
+    pl: "pl_PL",
+    "pt-BR": "pt_BR",
+    tr: "tr_TR",
+    ja: "ja_JP",
+    "nb-NO": "nb_NO",
+    "nn-NO": "nn_NO",
+};
+
+export const isSupportedLocale = (locale: string) =>
+    LOCALES.some(({ code }) => code === locale);
 
 export const localeUrl = (locale: string) => `${BASE_URL}/${locale}`;
 
@@ -98,14 +118,26 @@ export const languageAlternates = (): Record<string, string> => ({
 export const getLocaleSeo = (locale: string): LocaleSeo =>
     LOCALE_SEO[locale] ?? LOCALE_SEO[DEFAULT_LOCALE];
 
-export const buildLocaleMetadata = (locale: string): Metadata => {
+/** Site-wide defaults for every page under /[locale] (incl. 404s): no canonical here. */
+export const buildSiteMetadata = (locale: string): Metadata => {
     const { title, description } = getLocaleSeo(locale);
-    const url = localeUrl(locale);
 
     return {
         metadataBase: new URL(BASE_URL),
         title,
         description,
+    };
+};
+
+/** The locale home page: self-canonical, hreflang and Open Graph. */
+export const buildHomeMetadata = (locale: string): Metadata => {
+    const { title, description } = getLocaleSeo(locale);
+    const url = localeUrl(locale);
+
+    return {
+        title,
+        description,
+        robots: { index: true, follow: true },
         alternates: {
             canonical: url,
             languages: languageAlternates(),
@@ -116,7 +148,7 @@ export const buildLocaleMetadata = (locale: string): Metadata => {
             title,
             description,
             url,
-            locale,
+            locale: OG_LOCALE[locale] ?? OG_LOCALE[DEFAULT_LOCALE],
         },
     };
 };
@@ -128,7 +160,7 @@ export const buildJsonLd = (locale: string) => {
     return {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        name: title,
+        name: title.replace(/\s*\|\s*Vibany$/, ""),
         description,
         url,
         inLanguage: locale,
@@ -139,3 +171,7 @@ export const buildJsonLd = (locale: string) => {
         author: { "@type": "Person", name: "Ali Abbasov", url: AUTHOR_WEBSITE },
     };
 };
+
+/** Inline <script> safe: a "<" in a value can't close the tag. */
+export const jsonLdScript = (data: unknown) =>
+    JSON.stringify(data).replace(/</g, "\\u003c");

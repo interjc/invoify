@@ -6,5 +6,9 @@ export const routing = defineRouting({
   locales: LOCALES.map(locale => locale.code),
 
   // Used when no locale matches
-  defaultLocale: DEFAULT_LOCALE
+  defaultLocale: DEFAULT_LOCALE,
+
+  // hreflang is emitted as <link> tags by the home page metadata; the
+  // middleware's Link header used a different x-default and conflicted.
+  alternateLinks: false
 });

@@ -32,7 +32,7 @@ import BaseFooter from "@/app/components/layout/BaseFooter";
 import Providers from "@/contexts/Providers";
 
 // SEO
-import { ROOTKEYWORDS, buildJsonLd, buildLocaleMetadata } from "@/lib/seo";
+import { ROOTKEYWORDS, buildSiteMetadata, isSupportedLocale } from "@/lib/seo";
 
 // Variables
 import {
@@ -47,15 +47,12 @@ export async function generateMetadata({
     params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
     const { locale } = await params;
+    if (!isSupportedLocale(locale)) notFound();
 
     return {
-        ...buildLocaleMetadata(locale),
+        ...buildSiteMetadata(locale),
         icons: [{ rel: "icon", url: Favicon.src }],
         keywords: ROOTKEYWORDS,
-        robots: {
-            index: true,
-            follow: true,
-        },
         verification: {
             google: GOOGLE_SC_VERIFICATION,
         },
@@ -92,13 +89,6 @@ export default async function LocaleLayout({
 
     return (
         <html lang={locale} suppressHydrationWarning>
-            <head>
-                <script
-                    type="application/ld+json"
-                    id="json-ld"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(locale)) }}
-                />
-            </head>
             <body
                 className={`${outfit.className} ${dancingScript.variable} ${parisienne.variable} ${greatVibes.variable} ${alexBrush.variable} antialiased bg-background min-h-screen flex flex-col overflow-hidden`}
             >
