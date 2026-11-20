@@ -1,2 +1,4 @@
 User-Agent: *
 Disallow:
+
+Sitemap: https://invoice.vibany.com/sitemap.xml
