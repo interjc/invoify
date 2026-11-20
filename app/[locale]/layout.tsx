@@ -32,37 +32,35 @@ import BaseFooter from "@/app/components/layout/BaseFooter";
 import Providers from "@/contexts/Providers";
 
 // SEO
-import { JSONLD, ROOTKEYWORDS } from "@/lib/seo";
+import { ROOTKEYWORDS, buildJsonLd, buildLocaleMetadata } from "@/lib/seo";
 
 // Variables
 import {
-    BASE_URL,
     CLARITY_PROJECT_ID,
     GOOGLE_SC_VERIFICATION,
     LOCALES,
 } from "@/lib/variables";
 
-export const metadata: Metadata = {
-    title: "Invoify | Free Invoice Generator",
-    description:
-        "Create invoices effortlessly with Invoify, the free invoice generator. Try it now!",
-    icons: [{ rel: "icon", url: Favicon.src }],
-    keywords: ROOTKEYWORDS,
-    robots: {
-        index: true,
-        follow: true,
-    },
-    alternates: {
-        canonical: BASE_URL,
-    },
-    authors: {
-        name: "Ali Abbasov",
-        url: "https://aliabb.vercel.app",
-    },
-    verification: {
-        google: GOOGLE_SC_VERIFICATION,
-    },
-};
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+    const { locale } = await params;
+
+    return {
+        ...buildLocaleMetadata(locale),
+        icons: [{ rel: "icon", url: Favicon.src }],
+        keywords: ROOTKEYWORDS,
+        robots: {
+            index: true,
+            follow: true,
+        },
+        verification: {
+            google: GOOGLE_SC_VERIFICATION,
+        },
+    };
+}
 
 export const viewport = {
     width: "device-width",
@@ -98,7 +96,7 @@ export default async function LocaleLayout({
                 <script
                     type="application/ld+json"
                     id="json-ld"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(JSONLD) }}
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(locale)) }}
                 />
             </head>
             <body
